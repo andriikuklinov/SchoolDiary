@@ -63,7 +63,7 @@ namespace SchoolDiary.DAL.Repositories
         public async Task<IEnumerable<T>> DeleteRangeAsync(IEnumerable<T> entities)
         {
             _context.Set<T>().RemoveRange(entities);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return entities;
         }
