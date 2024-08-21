@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SchoolDiary.DAL;
+namespace SchoolDiary.DAL.Entities;
 
 public partial class Student
 {

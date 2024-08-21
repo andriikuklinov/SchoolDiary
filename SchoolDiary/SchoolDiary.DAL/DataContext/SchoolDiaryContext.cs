@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using SchoolDiary.DAL.Entities;
 
-namespace SchoolDiary.DAL;
+namespace SchoolDiary.DAL.DataContext;
 
 public partial class SchoolDiaryContext : DbContext
 {
