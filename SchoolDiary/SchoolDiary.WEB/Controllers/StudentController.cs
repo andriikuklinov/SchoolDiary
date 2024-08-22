@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SchoolDiary.BLL.DTO;
+using SchoolDiary.BLL.Exceptions;
 using SchoolDiary.BLL.IServices;
+using SchoolDiary.WEB.Models;
 
 namespace SchoolDiary.WEB.Controllers
 {
@@ -20,9 +22,35 @@ namespace SchoolDiary.WEB.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<StudentDTO>> GetStudents(string? filter, string? orderBy, int? page, int? pageSize)
+        public async Task<IActionResult> GetStudents(string? filter, string? orderBy, int? page, int? pageSize)
         {
-            return await _studentService.GetStudents(filter, orderBy, page, pageSize);
+            try
+            {
+                return Ok(new ApiResponse<IEnumerable<StudentDTO>>(await _studentService.GetStudents(filter, orderBy, page, pageSize)));
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteStudent(int id)
+        {
+            try
+            {
+                await _studentService.DeleteStudent(id);
+                return Ok(new ApiResponse<object>(null));
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+            
         }
     }
 }
