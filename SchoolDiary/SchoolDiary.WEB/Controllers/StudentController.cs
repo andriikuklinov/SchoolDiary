@@ -34,6 +34,19 @@ namespace SchoolDiary.WEB.Controllers
             }
         }
 
+        [HttpPut]
+        public async Task<IActionResult> UpdateStudent(StudentDTO studentDto)
+        {
+            try
+            {
+                return Ok(new ApiResponse<StudentDTO>(await _studentService.UpdateStudent(studentDto)));
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
         [HttpDelete]
         public async Task<IActionResult> DeleteStudent(int id)
         {
@@ -50,7 +63,6 @@ namespace SchoolDiary.WEB.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
-            
         }
     }
 }
