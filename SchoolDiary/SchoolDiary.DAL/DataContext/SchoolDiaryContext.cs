@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SchoolDiary.DAL.Entities;
 
 namespace SchoolDiary.DAL.DataContext;
 
-public partial class SchoolDiaryContext : DbContext
+public partial class SchoolDiaryContext : IdentityDbContext<IdentityUser, IdentityRole, string>
 {
     public SchoolDiaryContext()
     {
