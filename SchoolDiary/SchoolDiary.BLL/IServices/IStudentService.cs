@@ -10,7 +10,8 @@ namespace SchoolDiary.BLL.IServices
     public interface IStudentService
     {
         Task<IEnumerable<StudentDTO>> GetStudents(string filter, string orderBy, int? page, int? pageSize);
-        Task DeleteStudent(int id);
+        Task<StudentDTO> CreateStudent(StudentDTO studentDto);
+        Task<StudentDTO> DeleteStudent(int id);
         Task<StudentDTO> UpdateStudent(StudentDTO studentDTO);
     }
 }

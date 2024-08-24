@@ -28,16 +28,21 @@ namespace SchoolDiary.BLL.Services
             var students = await _studentRepository.GetStudents(filter, orderBy, page, pageSize);
             return _mapper.Map<IEnumerable<StudentDTO>>(students);
         }
+        public async Task<StudentDTO> CreateStudent(StudentDTO studentDto)
+        {
+            var student = _mapper.Map<Student>(studentDto);
+            return _mapper.Map<StudentDTO>(await _studentRepository.AddAsync(student));
+        }
         public async Task<StudentDTO> UpdateStudent(StudentDTO studentDTO)
         {
             var student = _mapper.Map<Student>(studentDTO);
             return _mapper.Map<StudentDTO>(await _studentRepository.UpdateAsync(student));
         }
-        public async Task DeleteStudent(int id)
+        public async Task<StudentDTO> DeleteStudent(int id)
         {
             var targetStudent = await _studentRepository.GetSingleAsync(_=>_.Id == id);
             if (targetStudent != null)
-                await _studentRepository.DeleteAsync(targetStudent);
+                return _mapper.Map<StudentDTO>(await _studentRepository.DeleteAsync(targetStudent));
             throw new EntityNotFoundException();
         }
     }
