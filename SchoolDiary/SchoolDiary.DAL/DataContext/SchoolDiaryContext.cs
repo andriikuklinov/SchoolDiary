@@ -196,6 +196,7 @@ public partial class SchoolDiaryContext : IdentityDbContext<IdentityUser, Identi
         });
 
         OnModelCreatingPartial(modelBuilder);
+        base.OnModelCreating(modelBuilder);
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
