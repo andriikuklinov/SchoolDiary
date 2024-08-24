@@ -17,6 +17,9 @@ namespace SchoolDiary.BLL.MappingProfile
             CreateMap<Student, StudentDTO>()
                 .ForMember(destination => destination.Birthdate, opt => opt.ConvertUsing(new DateOnlyToDateTimeConverter()))
                 .ForMember(destination => destination.EnrolnmentDate, opt => opt.ConvertUsing(new DateOnlyToDateTimeConverter()));
+            CreateMap<StudentDTO, Student>()
+                .ForMember(destination => destination.Birthdate, opt => opt.ConvertUsing(new DateTimeToDateOnlyConverter()))
+                .ForMember(destination => destination.EnrolnmentDate, opt => opt.ConvertUsing(new DateTimeToNullableDateOnlyConverter()));
         }
     }
 }
