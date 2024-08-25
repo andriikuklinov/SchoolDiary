@@ -10,10 +10,10 @@ using SchoolDiary.BLL.Services;
 using SchoolDiary.DAL.DataContext;
 using SchoolDiary.DAL.Repositories;
 using SchoolDiary.WEB.MappingProfile;
+using SchoolDiary.WEB.Models;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-
 builder.Services.AddControllers().AddNewtonsoftJson();
 builder.Services.AddAutoMapper(config =>
 {
@@ -55,6 +55,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped(typeof(IStudentService), typeof(StudentService));
 builder.Services.AddScoped(typeof(StudentRepository), typeof(StudentRepository));
 builder.Services.AddScoped(typeof(IAuthService), typeof(AuthService));
+builder.Services.AddScoped(typeof(IEmailNotificationService), typeof(EmailNotificationService));
 
 var app = builder.Build();
 app.UseRouting();

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.V4.Pages.Account.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using MimeKit;
 using Newtonsoft.Json.Linq;
 using SchoolDiary.BLL.DTO;
 using SchoolDiary.BLL.Exceptions;
@@ -19,11 +20,13 @@ namespace SchoolDiary.WEB.Controllers
         private readonly IMapper _mapper;
         private readonly IAuthService _authService;
         private readonly IConfiguration _configuration;
-        public AuthController(IMapper mapper, IAuthService authService, IConfiguration configuration)
+        private readonly IEmailNotificationService _emailNotificationService;
+        public AuthController(IMapper mapper, IAuthService authService, IConfiguration configuration, IEmailNotificationService emailNotificationService)
         {
             this._mapper = mapper;
             this._authService = authService;
             this._configuration = configuration;
+            this._emailNotificationService = emailNotificationService;
         }
 
         [HttpPost]
@@ -47,11 +50,11 @@ namespace SchoolDiary.WEB.Controllers
                 }
                 return BadRequest(new ApiResponse<IEnumerable<ModelError>>(ModelState.Values.SelectMany(value => value.Errors)));
             }
-            catch(NullReferenceException ex)
+            catch (NullReferenceException ex)
             {
                 return BadRequest(ex.Message);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
@@ -62,7 +65,7 @@ namespace SchoolDiary.WEB.Controllers
         {
             try
             {
-                if(ModelState.IsValid)
+                if (ModelState.IsValid)
                 {
                     var token = await _authService.Login(_mapper.Map<AuthDTO>(authModel), _configuration.GetSection("Jwt"));
                     if (!string.IsNullOrEmpty(token))
@@ -98,7 +101,7 @@ namespace SchoolDiary.WEB.Controllers
             {
                 return BadRequest(ex.Message);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
@@ -111,15 +114,23 @@ namespace SchoolDiary.WEB.Controllers
                 if (ModelState.IsValid)
                 {
                     var resultToken = await _authService.ForgotPassword(_mapper.Map<ForgotPasswordDTO>(forgotPasswordModel));
+                    var emailMessageDto = new EmailMessageDTO()
+                    {
+                        Sender = new MailboxAddress("School Diary", _configuration.GetSection("NotificationMetadata")["Sender"]),
+                        Reciever = new MailboxAddress(forgotPasswordModel.Email, forgotPasswordModel.Email),
+                        Content = Url.Action(nameof(ResetPassword), "Auth", new { resultToken }, Request.Scheme),
+                        Subject = "Reset Password"
+                    };
+                    await _emailNotificationService.Send(emailMessageDto, _configuration.GetSection("NotificationMetadata"));
                     return Ok(new ApiResponse<string>(Url.Action(nameof(ResetPassword), "Auth", new { resultToken }, Request.Scheme)));
                 }
                 return BadRequest(new ApiResponse<IEnumerable<ModelError>>(ModelState.Values.SelectMany(value => value.Errors)));
             }
-            catch(EntityNotFoundException ex)
+            catch (EntityNotFoundException ex)
             {
                 return BadRequest(ex.Message);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
