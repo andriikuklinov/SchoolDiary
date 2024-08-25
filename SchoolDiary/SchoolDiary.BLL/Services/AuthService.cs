@@ -32,8 +32,12 @@ namespace SchoolDiary.BLL.Services
                 if (result.Succeeded)
                 {
                     var user = await _userManager.FindByEmailAsync(authDto.Email);
-                    var token = GenerateToken(user, configuration);
-                    return token;
+                    if(user != null)
+                    {
+                        var token = GenerateToken(user, configuration);
+                        return token;
+                    }
+                    return null;
                 }
                 return null;
             }
@@ -93,6 +97,29 @@ namespace SchoolDiary.BLL.Services
                 return token;
             }
             throw new EntityNotFoundException("User not found.");
+        }
+
+        public async Task<IdentityResult> EditUser(UserDto userDto)
+        {
+            var user = await _userManager.FindByIdAsync(userDto.Id);
+            if(user != null)
+            {
+                user.Email = userDto.Email;
+                user.PhoneNumber = userDto.PhoneNumber;
+
+                return await _userManager.UpdateAsync(user);
+            }
+            throw new EntityNotFoundException("User not found.");
+        }
+        
+        public async Task<IdentityResult> DeleteUser(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if(user != null )
+            {
+                return await _userManager.DeleteAsync(user);
+            }
+            throw new EntityNotFoundException("User not found");
         }
     }
 }

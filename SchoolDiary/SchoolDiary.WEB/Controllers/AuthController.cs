@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.V4.Pages.Account.Internal;
 using Microsoft.AspNetCore.Mvc;
@@ -42,11 +43,11 @@ namespace SchoolDiary.WEB.Controllers
                         var token = await _authService.Login(_mapper.Map<AuthDTO>(authModel), _configuration.GetSection("Jwt"));
                         if (!string.IsNullOrEmpty(token))
                         {
-                            return Ok(new ApiResponse<string>());
+                            return Ok(new ApiResponse<string>(string.Empty));
                         }
                         return BadRequest(new ApiResponse<string>());
                     }
-                    return BadRequest(new ApiResponse<IdentityResult>());
+                    return BadRequest(new ApiResponse<IdentityResult>(registerResult));
                 }
                 return BadRequest(new ApiResponse<IEnumerable<ModelError>>(ModelState.Values.SelectMany(value => value.Errors)));
             }
@@ -131,6 +132,59 @@ namespace SchoolDiary.WEB.Controllers
                 return BadRequest(ex.Message);
             }
             catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+        [HttpPut]
+        [Authorize]
+        public async Task<IActionResult> EditUser(UserModel user)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var result = await _authService.EditUser(_mapper.Map<UserDto>(user));
+                    if(result.Succeeded)
+                    {
+                        return Ok(new ApiResponse<IdentityResult>(result));
+                    }
+                    return BadRequest(new ApiResponse<IdentityResult>());
+                }
+                return BadRequest(new ApiResponse<IEnumerable<ModelError>>(ModelState.Values.SelectMany(value => value.Errors)));
+            }
+            catch(EntityNotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpDelete]
+        [Authorize]
+        public async Task<IActionResult> DeleteUser([FromForm]string id)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(id))
+                {
+                    var result = await _authService.DeleteUser(id);
+                    if (result.Succeeded)
+                    {
+                        return Ok(new ApiResponse<IdentityResult>(result));
+                    }
+                    return BadRequest(new ApiResponse<IdentityResult>());
+                }
+                return BadRequest(new ApiResponse<string>());
+            }
+            catch(EntityNotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch(Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }

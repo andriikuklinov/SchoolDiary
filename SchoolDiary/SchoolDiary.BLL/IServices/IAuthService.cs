@@ -16,5 +16,7 @@ namespace SchoolDiary.BLL.IServices
         Task Logout();
         Task<IdentityResult> ResetPassword(ResetPasswordDTO resetPasswordModel);
         Task<string> ForgotPassword(ForgotPasswordDTO forgotPassfordDto);
+        Task<IdentityResult> EditUser(UserDto userDto);
+        Task<IdentityResult> DeleteUser(string id);
     }
 }
