@@ -82,7 +82,7 @@ namespace SchoolDiary.WEB.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
-
+        [HttpPost]
         public async Task<IActionResult> ResetPassword(Models.ResetPasswordModel resetPasswordModel)
         {
             try
@@ -103,7 +103,7 @@ namespace SchoolDiary.WEB.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
-
+        [HttpPost]
         public async Task<IActionResult> ForgotPassword(Models.ForgotPasswordModel forgotPasswordModel)
         {
             try
@@ -111,7 +111,7 @@ namespace SchoolDiary.WEB.Controllers
                 if (ModelState.IsValid)
                 {
                     var resultToken = await _authService.ForgotPassword(_mapper.Map<ForgotPasswordDTO>(forgotPasswordModel));
-                    return Ok(new ApiResponse<string>(Url.Action(nameof(ResetPassword), "Auth", new { resultToken }, Request.Scheme)))
+                    return Ok(new ApiResponse<string>(Url.Action(nameof(ResetPassword), "Auth", new { resultToken }, Request.Scheme)));
                 }
                 return BadRequest(new ApiResponse<IEnumerable<ModelError>>(ModelState.Values.SelectMany(value => value.Errors)));
             }

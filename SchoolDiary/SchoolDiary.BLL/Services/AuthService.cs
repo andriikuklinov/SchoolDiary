@@ -79,7 +79,7 @@ namespace SchoolDiary.BLL.Services
             var user = await _userManager.FindByEmailAsync(resetPasswordDto.Email);
             if(user != null)
             {
-                return await _userManager.ResetPasswordAsync(user, resetPasswordDto.Token, resetPasswordDto.Password);
+                return await _userManager.ResetPasswordAsync(user, HttpUtility.UrlDecode(resetPasswordDto.Token), resetPasswordDto.Password);
             }
             throw new EntityNotFoundException("User not found.");
         }
