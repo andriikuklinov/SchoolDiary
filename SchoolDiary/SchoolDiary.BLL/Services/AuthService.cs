@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using SchoolDiary.BLL.DTO;
+using SchoolDiary.BLL.Exceptions;
 using SchoolDiary.BLL.IServices;
 using System;
 using System.Collections.Generic;
@@ -71,6 +72,16 @@ namespace SchoolDiary.BLL.Services
         public async Task Logout()
         {
             await _signInManager.SignOutAsync();
+        }
+
+        public async Task<IdentityResult> ResetPassword(ResetPasswordDTO resetPasswordDto)
+        {
+            var user = await _userManager.FindByEmailAsync(resetPasswordDto.Email);
+            if(user != null)
+            {
+                return await _userManager.ResetPasswordAsync(user, resetPasswordDto.Token, resetPasswordDto.Password);
+            }
+            throw new EntityNotFoundException("User not found.")
         }
     }
 }

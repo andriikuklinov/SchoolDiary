@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using SchoolDiary.BLL.DTO;
+using SchoolDiary.BLL.Exceptions;
 using SchoolDiary.BLL.IServices;
 using SchoolDiary.WEB.Models;
 using Identity = Microsoft.AspNetCore.Identity;
@@ -24,16 +25,16 @@ namespace SchoolDiary.WEB.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(AuthDTO authDto)
+        public async Task<IActionResult> Register(AuthModel authModel)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var registerResult = await _authService.Register(authDto);
+                    var registerResult = await _authService.Register(_mapper.Map<AuthDTO>(authModel));
                     if (registerResult.Succeeded)
                     {
-                        var token = await _authService.Login(authDto, _configuration.GetSection("Jwt"));
+                        var token = await _authService.Login(_mapper.Map<AuthDTO>(authModel), _configuration.GetSection("Jwt"));
                         if (!string.IsNullOrEmpty(token))
                         {
                             return Ok(new ApiResponse<string>());
@@ -55,13 +56,13 @@ namespace SchoolDiary.WEB.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(AuthDTO authDto)
+        public async Task<IActionResult> Login(AuthModel authModel)
         {
             try
             {
                 if(ModelState.IsValid)
                 {
-                    var token = await _authService.Login(authDto, _configuration.GetSection("Jwt"));
+                    var token = await _authService.Login(_mapper.Map<AuthDTO>(authModel), _configuration.GetSection("Jwt"));
                     if (!string.IsNullOrEmpty(token))
                     {
                         return Ok(new ApiResponse<string>(token));
@@ -75,6 +76,27 @@ namespace SchoolDiary.WEB.Controllers
                 return BadRequest(ex.Message);
             }
             catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        public async Task<IActionResult> ResetPassword(ResetPasswordModel resetPasswordModel)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var result = await _authService.ResetPassword(_mapper.Map<ResetPasswordDTO>(resetPasswordModel));
+                    return Ok(new ApiResponse<IdentityResult>(result));
+                }
+                return BadRequest(new ApiResponse<string>());
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch(Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }

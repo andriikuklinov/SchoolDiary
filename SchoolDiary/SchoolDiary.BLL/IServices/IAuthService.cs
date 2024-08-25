@@ -14,5 +14,6 @@ namespace SchoolDiary.BLL.IServices
         Task<IdentityResult> Register(AuthDTO authDto);
         Task<string> Login(AuthDTO authDto, IConfigurationSection configuration);
         Task Logout();
+        Task<IdentityResult> ResetPassword(ResetPasswordDTO resetPasswordModel);
     }
 }

@@ -9,6 +9,7 @@ using SchoolDiary.BLL.MappingProfile;
 using SchoolDiary.BLL.Services;
 using SchoolDiary.DAL.DataContext;
 using SchoolDiary.DAL.Repositories;
+using SchoolDiary.WEB.MappingProfile;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers().AddNewtonsoftJson();
 builder.Services.AddAutoMapper(config =>
 {
+    config.AddProfile<WebLayerMappingProfile>();
     config.AddProfile<BusinessLogicLayerMappingProfile>();
 });
 builder.Services.AddDbContext<SchoolDiaryContext>(options =>
