@@ -29,10 +29,6 @@ namespace SchoolDiary.BLL.Services
 
             using(SmtpClient smtpClient = new SmtpClient())
             {
-                var username = config["Username"];
-                var password = config["Password"];
-                var port = int.Parse(config["Port"]);
-                var server = config["SmtpServer"];
                 await smtpClient.ConnectAsync(config["SmtpServer"], int.Parse(config["Port"]), true);
                 await smtpClient.AuthenticateAsync(config["Username"], config["Password"]);
                 await smtpClient.SendAsync(mimeMessage);
