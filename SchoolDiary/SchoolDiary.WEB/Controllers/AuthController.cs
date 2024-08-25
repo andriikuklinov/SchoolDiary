@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.V4.Pages.Account.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Newtonsoft.Json.Linq;
 using SchoolDiary.BLL.DTO;
 using SchoolDiary.BLL.Exceptions;
 using SchoolDiary.BLL.IServices;
@@ -81,7 +83,7 @@ namespace SchoolDiary.WEB.Controllers
             }
         }
 
-        public async Task<IActionResult> ResetPassword(ResetPasswordModel resetPasswordModel)
+        public async Task<IActionResult> ResetPassword(Models.ResetPasswordModel resetPasswordModel)
         {
             try
             {
@@ -90,9 +92,30 @@ namespace SchoolDiary.WEB.Controllers
                     var result = await _authService.ResetPassword(_mapper.Map<ResetPasswordDTO>(resetPasswordModel));
                     return Ok(new ApiResponse<IdentityResult>(result));
                 }
-                return BadRequest(new ApiResponse<string>());
+                return BadRequest(new ApiResponse<IEnumerable<ModelError>>(ModelState.Values.SelectMany(value => value.Errors)));
             }
             catch (EntityNotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        public async Task<IActionResult> ForgotPassword(Models.ForgotPasswordModel forgotPasswordModel)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var resultToken = await _authService.ForgotPassword(_mapper.Map<ForgotPasswordDTO>(forgotPasswordModel));
+                    return Ok(new ApiResponse<string>(Url.Action(nameof(ResetPassword), "Auth", new { resultToken }, Request.Scheme)))
+                }
+                return BadRequest(new ApiResponse<IEnumerable<ModelError>>(ModelState.Values.SelectMany(value => value.Errors)));
+            }
+            catch(EntityNotFoundException ex)
             {
                 return BadRequest(ex.Message);
             }

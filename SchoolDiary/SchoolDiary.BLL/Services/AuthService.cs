@@ -81,7 +81,18 @@ namespace SchoolDiary.BLL.Services
             {
                 return await _userManager.ResetPasswordAsync(user, resetPasswordDto.Token, resetPasswordDto.Password);
             }
-            throw new EntityNotFoundException("User not found.")
+            throw new EntityNotFoundException("User not found.");
+        }
+
+        public async Task<string> ForgotPassword(ForgotPasswordDTO forgotPassfordDto)
+        {
+            var user = await _userManager.FindByEmailAsync(forgotPassfordDto.Email);
+            if(user != null)
+            {
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                return token;
+            }
+            throw new EntityNotFoundException("User not found.");
         }
     }
 }

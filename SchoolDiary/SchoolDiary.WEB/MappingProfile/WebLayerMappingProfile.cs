@@ -13,6 +13,7 @@ namespace SchoolDiary.WEB.MappingProfile
             CreateMap<StudentDTO, StudentModel>();
             CreateMap<AuthModel, AuthDTO>();
             CreateMap<ResetPasswordModel, ResetPasswordDTO>();
+            CreateMap<ForgotPasswordModel, ForgotPasswordDTO>();
         }
     }
 }
