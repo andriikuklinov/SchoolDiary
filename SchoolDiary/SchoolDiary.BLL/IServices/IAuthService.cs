@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using SchoolDiary.BLL.DTO;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace SchoolDiary.BLL.IServices
     public interface IAuthService
     {
         Task<IdentityResult> Register(AuthDTO authDto);
-        Task<SignInResult> Login(AuthDTO authDto);
+        Task<string> Login(AuthDTO authDto, IConfigurationSection configuration);
+        Task Logout();
     }
 }

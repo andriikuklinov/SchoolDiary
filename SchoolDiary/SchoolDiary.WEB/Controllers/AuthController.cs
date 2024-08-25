@@ -15,10 +15,12 @@ namespace SchoolDiary.WEB.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IAuthService _authService;
-        public AuthController(IMapper mapper, IAuthService authService)
+        private readonly IConfiguration _configuration;
+        public AuthController(IMapper mapper, IAuthService authService, IConfiguration configuration)
         {
             this._mapper = mapper;
             this._authService = authService;
+            this._configuration = configuration;
         }
 
         [HttpPost]
@@ -31,14 +33,14 @@ namespace SchoolDiary.WEB.Controllers
                     var registerResult = await _authService.Register(authDto);
                     if (registerResult.Succeeded)
                     {
-                        var loginResult = await _authService.Login(authDto);
-                        if (loginResult.Succeeded)
+                        var token = await _authService.Login(authDto, _configuration.GetSection("Jwt"));
+                        if (!string.IsNullOrEmpty(token))
                         {
-                            return Ok(new ApiResponse<Identity.SignInResult>(loginResult));
+                            return Ok(new ApiResponse<string>());
                         }
-                        return BadRequest(new ApiResponse<Identity.SignInResult>(loginResult));
+                        return BadRequest(new ApiResponse<string>());
                     }
-                    return BadRequest(new ApiResponse<IdentityResult>(registerResult));
+                    return BadRequest(new ApiResponse<IdentityResult>());
                 }
                 return BadRequest(new ApiResponse<IEnumerable<ModelError>>(ModelState.Values.SelectMany(value => value.Errors)));
             }
@@ -50,7 +52,32 @@ namespace SchoolDiary.WEB.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
-            
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(AuthDTO authDto)
+        {
+            try
+            {
+                if(ModelState.IsValid)
+                {
+                    var token = await _authService.Login(authDto, _configuration.GetSection("Jwt"));
+                    if (!string.IsNullOrEmpty(token))
+                    {
+                        return Ok(new ApiResponse<string>(token));
+                    }
+                    return BadRequest(new ApiResponse<string>());
+                }
+                return BadRequest(new ApiResponse<IEnumerable<ModelError>>(ModelState.Values.SelectMany(value => value.Errors)));
+            }
+            catch (NullReferenceException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
     }
 }
