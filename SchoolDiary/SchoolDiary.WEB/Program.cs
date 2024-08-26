@@ -56,6 +56,7 @@ builder.Services.AddScoped(typeof(IStudentService), typeof(StudentService));
 builder.Services.AddScoped(typeof(StudentRepository), typeof(StudentRepository));
 builder.Services.AddScoped(typeof(IAuthService), typeof(AuthService));
 builder.Services.AddScoped(typeof(IEmailNotificationService), typeof(EmailNotificationService));
+builder.Services.AddScoped(typeof(IRoleService), typeof(RoleService));
 
 var app = builder.Build();
 app.UseRouting();
