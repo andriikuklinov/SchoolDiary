@@ -1,13 +1,13 @@
 import React from 'react'
 import './App.css'
+import { Outlet } from 'react-router-dom'
 
-function App() {
-  
-  return (
-      <>
-          <button className="btn btn-primary">Primary button</button>
-      </>
-  )
+export default function App() {
+
+    return (
+        <>
+            <p>Sidebar</p>
+            <Outlet />
+        </>
+    )
 }
-
-export default App
