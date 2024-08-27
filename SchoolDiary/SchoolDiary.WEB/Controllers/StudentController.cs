@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -11,6 +12,7 @@ namespace SchoolDiary.WEB.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Authorize]
     public class StudentController : ControllerBase
     {
         private readonly IMapper _mapper;
@@ -36,12 +38,12 @@ namespace SchoolDiary.WEB.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateStudent([FromBody]StudentDTO studentDto)
+        public async Task<IActionResult> CreateStudent([FromBody]StudentModel studentModel)
         {
             try
             {
                 if(ModelState.IsValid)
-                    return Ok(new ApiResponse<StudentDTO>(await _studentService.CreateStudent(studentDto)));
+                    return Ok(new ApiResponse<StudentDTO>(await _studentService.CreateStudent(_mapper.Map<StudentDTO>(studentModel))));
                 return BadRequest(new ApiResponse<IEnumerable<ModelError>>(ModelState.Values.SelectMany(value => value.Errors)));
             }
             catch (EntityAlreadyExistsException ex)
@@ -55,11 +57,11 @@ namespace SchoolDiary.WEB.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateStudent(StudentDTO studentDto)
+        public async Task<IActionResult> UpdateStudent(StudentModel studentModel)
         {
             try
             {
-                return Ok(new ApiResponse<StudentDTO>(await _studentService.UpdateStudent(studentDto)));
+                return Ok(new ApiResponse<StudentDTO>(await _studentService.UpdateStudent(_mapper.Map<StudentDTO>(studentModel))));
             }
             catch(Exception ex)
             {
