@@ -31,7 +31,11 @@ module.exports = {
                         loader: 'css-loader'
                     }
                 ]
-            }
+            },
+            {
+                test: /\.(png|svg|jpg|jpeg|gif)$/i,
+                type: 'asset/resource',
+            },
         ]
     },
     devServer: {
