@@ -51,7 +51,13 @@ builder.Services.AddAuthentication(options =>
 });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "AllowClientOrigin", policy =>
+    {
+        policy.WithOrigins(builder.Configuration.GetSection("ClientOrigin").Value).AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
+    });
+});
 builder.Services.AddScoped(typeof(IStudentService), typeof(StudentService));
 builder.Services.AddScoped(typeof(StudentRepository), typeof(StudentRepository));
 builder.Services.AddScoped(typeof(IAuthService), typeof(AuthService));
@@ -59,6 +65,7 @@ builder.Services.AddScoped(typeof(IEmailNotificationService), typeof(EmailNotifi
 builder.Services.AddScoped(typeof(IRoleService), typeof(RoleService));
 
 var app = builder.Build();
+app.UseCors("AllowClientOrigin");
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
