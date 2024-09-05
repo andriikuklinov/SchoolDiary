@@ -77,6 +77,10 @@ namespace SchoolDiary.WEB.Controllers
                 }
                 return BadRequest(new ApiResponse<IEnumerable<ModelError>>(ModelState.Values.SelectMany(value => value.Errors)));
             }
+            catch (EntityNotFoundException ex)
+            {
+                return Ok(new ApiResponse<string>(ex));
+            }
             catch (NullReferenceException ex)
             {
                 return BadRequest(ex.Message);
