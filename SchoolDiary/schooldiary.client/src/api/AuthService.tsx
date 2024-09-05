@@ -1,3 +1,5 @@
+import axios, { AxiosResponse } from "axios";
+import { Response } from './Api.module'
 export class AuthService {
     private _serverUrl: string;
 
@@ -5,17 +7,17 @@ export class AuthService {
         this._serverUrl = serverUrl;
     }
 
-    async login(login: string, password: string) {
+    async login(email: string, password: string): Promise<AxiosResponse<Response<string>>> {
         try {
-            const response = await fetch(`${this._serverUrl}/Auth/Login`, {
-                body: JSON.stringify({ login: login, password: password }),
-                method: 'POST'
-            });
-
-            return response;
+            return axios.post(`${this._serverUrl}Auth/Login`, JSON.stringify({ email, password }), {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
         }
         catch (error) {
             console.error('Error during login: ', error);
+            throw error;
         }
     }
 }

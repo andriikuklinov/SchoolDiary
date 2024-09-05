@@ -1,22 +1,46 @@
-import React from 'react';
-import loginFormImg from './../../assets/login_page_logo.png';
-import { AuthService } from '../../api/AuthService';
+import React, { useState } from 'react';
 import AuthLayout from '../auth_layout/AuthLayout';
+import { FieldValues, useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { AuthService } from '../../api/AuthService';
+import { serverUrl } from '../../api/Api.module';
+
+const schema = z.object({
+    email: z.string().nonempty("Email is required").email(),
+    password: z.string().nonempty("Password is required")
+});
+
+type FormData = z.infer<typeof schema>;
 
 export default function Login() {
-    //let authService = new AuthService('');
-    //let response = authService.login('', '');
-
+    const [ errorMessage, setErrorMessage ] = useState('');
+    const { register, handleSubmit, formState: { errors, isValid } } = useForm<FormData>({ resolver: zodResolver(schema) });
+    const onSubmit = (data: FieldValues) => {
+        const authService: AuthService = new AuthService(serverUrl);
+        authService.login(data.email, data.password).then((response) => {
+            setErrorMessage('');
+            if (response.data.isSuccess) {
+                localStorage.setItem('jwt', response.data.result);
+            }
+            else {
+                setErrorMessage(response.data.errorMessage);
+            }
+        });
+    }
     return (
         <>
             <AuthLayout header="Sign In">
-                <form className="login-form">
+                <form className="login-form" onSubmit={handleSubmit(onSubmit)}>
                     <div className="mb-3">
-                        <input type="email" placeholder="Email" className="form-control" />
+                        <input {...register('email')} type="email" placeholder="Email" className="form-control" />
+                        {errors.email && <p className="text-danger">{errors.email.message}</p>}
                     </div>
                     <div className="mb-3">
-                        <input type="password" placeholder="Password" className="form-control" />
+                        <input {...register('password')} type="password" placeholder="Password" className="form-control" />
+                        {errors.password && <p className="text-danger">{errors.password.message}</p>}
                     </div>
+                    <p className="text-danger">{errorMessage}</p>
                     <div className="justify-content-between">
                         <span>
                             <input type="checkbox" className="form-check-input" />
@@ -25,7 +49,7 @@ export default function Login() {
                         <a className="forgot-pass-link">Forgot password?</a>
                     </div>
                     <div className="login-form-actions">
-                        <button className="btn btn-primary btn-lg login-btn">LOGIN</button>
+                        <button disabled={ !isValid } className="btn btn-primary btn-lg login-btn">LOGIN</button>
                         <p style={{ clear: 'both', paddingTop: '10px', float: 'left' }} className="small">Don`t have an account? &nbsp;
                             <a className="link-danger" href="#">Register</a>
                         </p>

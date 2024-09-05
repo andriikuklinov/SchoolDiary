@@ -39,7 +39,7 @@ namespace SchoolDiary.BLL.Services
                     }
                     return null;
                 }
-                return null;
+                throw new EntityNotFoundException("Wrong credentials.");
             }
             throw new NullReferenceException("Email or password is empty.");
         }
