@@ -13,6 +13,8 @@
     <Folder Include="src\components\login\" />
     <Folder Include="src\api\" />
     <Folder Include="src\components\auth_layout\" />
+    <Folder Include="src\components\forgot_password\" />
+    <Folder Include="src\components\forgot_email\" />
     <Folder Include="src\components\register\" />
   </ItemGroup>
 </Project>

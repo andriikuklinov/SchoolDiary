@@ -123,7 +123,7 @@ namespace SchoolDiary.WEB.Controllers
                     {
                         Sender = new MailboxAddress("School Diary", _configuration.GetSection("NotificationMetadata")["Sender"]),
                         Reciever = new MailboxAddress(forgotPasswordModel.Email, forgotPasswordModel.Email),
-                        Content = Url.Action(nameof(ResetPassword), "Auth", new { resultToken }, Request.Scheme),
+                        Content = $"http://localhost:8081/forgot-password?resultToken={resultToken}&email={forgotPasswordModel.Email}",
                         Subject = "Reset Password"
                     };
                     await _emailNotificationService.Send(emailMessageDto, _configuration.GetSection("NotificationMetadata"));

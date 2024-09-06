@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -83,7 +84,8 @@ namespace SchoolDiary.BLL.Services
             var user = await _userManager.FindByEmailAsync(resetPasswordDto.Email);
             if(user != null)
             {
-                return await _userManager.ResetPasswordAsync(user, HttpUtility.UrlDecode(resetPasswordDto.Token), resetPasswordDto.Password);
+                var a = HttpUtility.UrlDecode(resetPasswordDto.Token).Replace(" ", "+");
+                return await _userManager.ResetPasswordAsync(user, HttpUtility.UrlDecode(resetPasswordDto.Token).Replace(" ", "+"), resetPasswordDto.Password);
             }
             throw new EntityNotFoundException("User not found.");
         }

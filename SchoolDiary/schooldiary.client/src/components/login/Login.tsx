@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AuthService } from '../../api/AuthService';
 import { serverUrl } from '../../api/Api.module';
+import { Link, redirect } from 'react-router-dom';
 
 const schema = z.object({
     email: z.string().nonempty("Email is required").email(),
@@ -16,6 +17,9 @@ type FormData = z.infer<typeof schema>;
 export default function Login() {
     const [ errorMessage, setErrorMessage ] = useState('');
     const { register, handleSubmit, formState: { errors, isValid } } = useForm<FormData>({ resolver: zodResolver(schema) });
+    const handleForgotPassword = () => {
+        redirect("/forgot-email");
+    }
     const onSubmit = (data: FieldValues) => {
         const authService: AuthService = new AuthService(serverUrl);
         authService.login(data.email, data.password).then((response) => {
@@ -46,12 +50,12 @@ export default function Login() {
                             <input type="checkbox" className="form-check-input" />
                             <label className="form-check-label">Remember me</label>
                         </span>
-                        <a className="forgot-pass-link">Forgot password?</a>
+                        <Link to="/forgot-email" className="forgot-pass-link">Forgot password?</Link>
                     </div>
-                    <div className="login-form-actions">
+                    <div className="auth-form-actions">
                         <button disabled={ !isValid } className="btn btn-primary btn-lg login-btn">LOGIN</button>
                         <p style={{ clear: 'both', paddingTop: '10px', float: 'left' }} className="small">Don`t have an account? &nbsp;
-                            <a className="link-danger" href="#">Register</a>
+                            <Link to="/register" className="link-danger">Register</Link>
                         </p>
                     </div>
                 </form>

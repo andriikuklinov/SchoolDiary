@@ -53,7 +53,7 @@ div.bg-primary {
 .auth-form {
     max-width: 400px;
 }
-.login-form-actions {
+.auth-form-actions {
     display: block;
     margin-top: 70px;
 }

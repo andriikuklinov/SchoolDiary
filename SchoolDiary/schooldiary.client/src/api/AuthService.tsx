@@ -34,4 +34,32 @@ export class AuthService {
             throw error;
         }
     }
+
+    async forgotPassword(email: string): Promise<AxiosResponse<Response<string>>> {
+        try {
+            return axios.post(`${this._serverUrl}Auth/ForgotPassword`, JSON.stringify({ email }), {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+        }
+        catch (error) {
+            console.log('Error during reset password', error);
+            throw error;
+        }
+    }
+
+    async resetPassword(token: string | null, email: string | null, password: string, confirmPassword: string): Promise<AxiosResponse<Response<string>>> {
+        try {
+            return axios.post(`${this._serverUrl}Auth/ResetPassword`, JSON.stringify({ token, email, password, confirmPassword }), {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+        }
+        catch (error) {
+            console.log('Error during reset password.');
+            throw error;
+        }
+    }
 }
