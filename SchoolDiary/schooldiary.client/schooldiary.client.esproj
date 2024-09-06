@@ -13,5 +13,6 @@
     <Folder Include="src\components\login\" />
     <Folder Include="src\api\" />
     <Folder Include="src\components\auth_layout\" />
+    <Folder Include="src\components\register\" />
   </ItemGroup>
 </Project>

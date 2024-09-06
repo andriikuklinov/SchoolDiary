@@ -43,11 +43,11 @@ namespace SchoolDiary.WEB.Controllers
                         var token = await _authService.Login(_mapper.Map<AuthDTO>(authModel), _configuration.GetSection("Jwt"));
                         if (!string.IsNullOrEmpty(token))
                         {
-                            return Ok(new ApiResponse<string>(string.Empty));
+                            return Ok(new ApiResponse<string>(token));
                         }
                         return BadRequest(new ApiResponse<string>());
                     }
-                    return BadRequest(new ApiResponse<IdentityResult>(registerResult));
+                    return Ok(new ApiResponse<object>(false, null, registerResult.Errors.FirstOrDefault().Description));
                 }
                 return BadRequest(new ApiResponse<IEnumerable<ModelError>>(ModelState.Values.SelectMany(value => value.Errors)));
             }

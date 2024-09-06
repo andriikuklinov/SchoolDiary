@@ -23,5 +23,11 @@
             Result = default(T);
             ErrorMessage = exception.Message;
         }
+        public ApiResponse(bool isSuccess, T result, string errorMessage)
+        {
+            IsSuccess = isSuccess;
+            Result = result;
+            ErrorMessage = errorMessage;
+        }
     }
 }

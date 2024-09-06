@@ -31,7 +31,7 @@ export default function Login() {
     return (
         <>
             <AuthLayout header="Sign In">
-                <form className="login-form" onSubmit={handleSubmit(onSubmit)}>
+                <form className="auth-form" onSubmit={handleSubmit(onSubmit)}>
                     <div className="mb-3">
                         <input {...register('email')} type="email" placeholder="Email" className="form-control" />
                         {errors.email && <p className="text-danger">{errors.email.message}</p>}

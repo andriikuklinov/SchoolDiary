@@ -20,4 +20,18 @@ export class AuthService {
             throw error;
         }
     }
+
+    async register(email: string, password: string, confirmPassword: string): Promise<AxiosResponse<Response<string>>> {
+        try {
+            return axios.post(`${this._serverUrl}Auth/Register`, JSON.stringify({ email, password, confirmPassword }), {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+        }
+        catch (error) {
+            console.log('Error during registration: ', error);
+            throw error;
+        }
+    }
 }

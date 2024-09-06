@@ -6,6 +6,7 @@ import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Login from './components/login/Login'
+import Register from './components/register/Register'
 
 const router = createBrowserRouter([
     {
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
     {
         path: "login",
         element: <Login />
+    },
+    {
+        path: "register",
+        element: <Register />
     }
 ]);
 
