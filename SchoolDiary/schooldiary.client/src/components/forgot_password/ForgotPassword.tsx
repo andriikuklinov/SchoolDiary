@@ -29,8 +29,13 @@ export default function ForgotPassword() {
     const onSubmit = (data: FieldValues) => {
         const authService: AuthService = new AuthService(serverUrl);
         if (searchParams.get('resultToken') != null && searchParams.get('email') != null) {
-            authService.resetPassword(encodeURIComponent(searchParams.get('resultToken')|| ''), searchParams.get('email'), data.password, data.confirmPassword).then((response) => {
-                navigate('/login');
+            authService.resetPassword(encodeURIComponent(searchParams.get('resultToken') || ''), searchParams.get('email'), data.password, data.confirmPassword).then((response) => {
+                if (response.data.isSuccess) {
+                    navigate('/login');
+                }
+                else {
+                    setErrorMessage(response.data.result[0].description);
+                }
             }).catch((reason) => {
                 console.log(reason);
             });

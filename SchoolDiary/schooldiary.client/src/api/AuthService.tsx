@@ -49,7 +49,7 @@ export class AuthService {
         }
     }
 
-    async resetPassword(token: string | null, email: string | null, password: string, confirmPassword: string): Promise<AxiosResponse<Response<string>>> {
+    async resetPassword(token: string | null, email: string | null, password: string, confirmPassword: string): Promise<AxiosResponse<Response<any>>> {
         try {
             return axios.post(`${this._serverUrl}Auth/ResetPassword`, JSON.stringify({ token, email, password, confirmPassword }), {
                 headers: {

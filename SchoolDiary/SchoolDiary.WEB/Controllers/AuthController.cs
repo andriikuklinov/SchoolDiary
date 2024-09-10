@@ -98,7 +98,11 @@ namespace SchoolDiary.WEB.Controllers
                 if (ModelState.IsValid)
                 {
                     var result = await _authService.ResetPassword(_mapper.Map<ResetPasswordDTO>(resetPasswordModel));
-                    return Ok(new ApiResponse<IdentityResult>(result));
+                    if (result.Succeeded)
+                    {
+                        return Ok(new ApiResponse<IdentityResult>(result));
+                    }
+                    return Ok(new ApiResponse<IEnumerable<IdentityError>>(false, result.Errors, "Something went wrong"));
                 }
                 return BadRequest(new ApiResponse<IEnumerable<ModelError>>(ModelState.Values.SelectMany(value => value.Errors)));
             }
