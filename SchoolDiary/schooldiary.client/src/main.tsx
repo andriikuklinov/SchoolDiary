@@ -9,12 +9,18 @@ import Login from './components/login/Login'
 import Register from './components/register/Register'
 import ForgotPassword from './components/forgot_password/ForgotPassword'
 import ForgotEmail from './components/forgot_email/ForgotEmail'
+import Student from './components/student/Student'
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: <App />,
-        children: []
+        children: [
+            {
+                path: "student",
+                element: <Student />
+            }
+        ]
     },
     {
         path: "login",
