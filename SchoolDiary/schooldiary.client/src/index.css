@@ -19,17 +19,7 @@ button.btn-primary {
 div.bg-primary {
     background-color: #3b71ca !important;
 }
-nav.bg-dark {
-    background-color: #1B1E24 !important;
-}
 /*Common*/
-.icon-btn {
-    border: none;
-    background: transparent;
-}
-    .icon-btn:active {
-        color: #282C34 !important;
-    }
 .sidebar {
     height: 100%;
     width: 200px;
@@ -120,10 +110,6 @@ nav.bg-dark {
         display: inline;
         vertical-align: bottom;
     }
-.active {
-    color: #1B1E24;
-    background-color: #61D4E7;
-}
 .menu-item {
     width: 200px;
 }
@@ -132,23 +118,12 @@ nav.bg-dark {
     border-top: 1px solid #bbb;
 }
 .collapsed {
-    margin-left: 200px;
+    margin-left: 250px;
     transition: .5s;
 }
 .stretched {
-    margin-left: 50px;
+    margin-left: 100px;
     transition: .5s;
-}
-.search-form {
-    display: flex;
-    align-items: center;
-    float: right;
-}
-.search-input {
-    margin-right: 10px;
-}
-.search-btn {
-    margin-right: 10px;
 }
 /*Login page*/
 .login-container {

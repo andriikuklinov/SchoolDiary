@@ -17,9 +17,7 @@ export default function App() {
             <Sidebar toogleMainLeftMargin={toogleMainLeftMargin} />
             <main className={mainClass}>
                 <Navbar />
-                <div className="container">
-                    <Outlet />
-                </div>
+                <Outlet />
             </main>
         </>
     )

@@ -8,7 +8,6 @@ import { BsFillPersonLinesFill } from "react-icons/bs";
 import { BsCalendar2Check } from "react-icons/bs";
 import { BsJournalBookmarkFill } from "react-icons/bs";
 import { BsFillLayersFill } from "react-icons/bs";
-import { BsBoxArrowLeft } from "react-icons/bs";
 
 interface Props {
     toogleMainLeftMargin: (isSidebarHidden: boolean) => void
@@ -36,37 +35,31 @@ export default function Sidebar(props: Props) {
                 <li className="nav-item">
                     <div className="menu-item">
                         <BsFillPeopleFill size={30} />
-                        <NavLink to="/student" className="nav-link">Student</NavLink>
+                        <NavLink to="/student" className={isSidebarHidden ? "hidden" : "nav-link"}>Student</NavLink>
                     </div>
                 </li>
                 <li className="nav-item">
                     <div className="menu-item">
                         <BsFillPersonLinesFill size={30} />
-                        <NavLink to="/teacher" className={isSidebarHidden ? "hidden" : "nav-link"}>Teacher</NavLink>
+                        <NavLink to="/student" className={isSidebarHidden ? "hidden" : "nav-link"}>Teacher</NavLink>
                     </div>
                 </li>
                 <li className="nav-item">
                     <div className="menu-item">
                         <BsCalendar2Check size={30} />
-                        <NavLink to="/course" className={isSidebarHidden ? "hidden" : "nav-link"}>Course</NavLink>
+                        <NavLink to="/student" className={isSidebarHidden ? "hidden" : "nav-link"}>Course</NavLink>
                     </div>
                 </li>
                 <li className="nav-item">
                     <div className="menu-item">
                         <BsJournalBookmarkFill size={30} />
-                        <NavLink to="/assesment" className={isSidebarHidden ? "hidden" : "nav-link"}>Assesment</NavLink>
+                        <NavLink to="/student" className={isSidebarHidden ? "hidden" : "nav-link"}>Assesment</NavLink>
                     </div>
                 </li>
                 <li className="nav-item">
                     <div className="menu-item">
                         <BsFillLayersFill size={30} />
-                        <NavLink to="/term" className={isSidebarHidden ? "hidden" : "nav-link"}>Term</NavLink>
-                    </div>
-                </li>
-                <li className="nav-item">
-                    <div className="menu-item">
-                        <BsGearFill size={30} />
-                        <NavLink to="/settings" className="nav-link">Settings</NavLink>
+                        <NavLink to="/student" className={isSidebarHidden ? "hidden" : "nav-link"}>Term</NavLink>
                     </div>
                 </li>
             </ul>
@@ -74,8 +67,8 @@ export default function Sidebar(props: Props) {
                 <ul className="nav nav-pills">
                     <div className="nav-item">
                         <div className="menu-item">
-                            <BsBoxArrowLeft size={30} />
-                            <NavLink to="/logout" className="nav-link">Logout</NavLink>
+                            <BsGearFill size={30} />
+                            <NavLink to="/student" className="nav-link">Settings</NavLink>
                         </div>
                     </div>
                 </ul>
