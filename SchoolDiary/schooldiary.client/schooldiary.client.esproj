@@ -10,11 +10,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="src\assets\" />
+    <Folder Include="src\components\common\data_table\" />
+    <Folder Include="src\components\common\navbar\" />
+    <Folder Include="src\components\common\sidebar\" />
     <Folder Include="src\components\login\" />
     <Folder Include="src\api\" />
     <Folder Include="src\components\auth_layout\" />
     <Folder Include="src\components\forgot_password\" />
     <Folder Include="src\components\forgot_email\" />
+    <Folder Include="src\components\student\" />
     <Folder Include="src\components\register\" />
   </ItemGroup>
 </Project>
