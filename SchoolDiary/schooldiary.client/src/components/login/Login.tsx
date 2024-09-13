@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AuthService } from '../../api/AuthService';
 import { serverUrl } from '../../api/Api.module';
-import { Link, redirect } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const schema = z.object({
     email: z.string().nonempty("Email is required").email(),
@@ -17,15 +17,18 @@ type FormData = z.infer<typeof schema>;
 export default function Login() {
     const [ errorMessage, setErrorMessage ] = useState('');
     const { register, handleSubmit, formState: { errors, isValid } } = useForm<FormData>({ resolver: zodResolver(schema) });
+    const navigate = useNavigate();
     const handleForgotPassword = () => {
-        redirect("/forgot-email");
+        navigate("/forgot-email");
     }
     const onSubmit = (data: FieldValues) => {
         const authService: AuthService = new AuthService(serverUrl);
         authService.login(data.email, data.password).then((response) => {
             setErrorMessage('');
+            debugger;
             if (response.data.isSuccess) {
                 localStorage.setItem('jwt', response.data.result);
+                navigate("/student");
             }
             else {
                 setErrorMessage(response.data.errorMessage);

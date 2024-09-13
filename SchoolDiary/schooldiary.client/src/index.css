@@ -23,6 +23,10 @@ nav.bg-dark {
     background-color: #1B1E24 !important;
 }
 /*Common*/
+.thead-btn{
+    border: none;
+    background-color: transparent;
+}
 .icon-btn {
     border: none;
     background: transparent;

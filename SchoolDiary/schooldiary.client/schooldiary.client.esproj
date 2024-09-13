@@ -12,6 +12,8 @@
     <Folder Include="src\assets\" />
     <Folder Include="src\components\common\data_table\" />
     <Folder Include="src\components\common\navbar\" />
+    <Folder Include="src\components\common\controls\button\icon_btn\" />
+    <Folder Include="src\components\common\model\" />
     <Folder Include="src\components\common\sidebar\" />
     <Folder Include="src\components\login\" />
     <Folder Include="src\api\" />
