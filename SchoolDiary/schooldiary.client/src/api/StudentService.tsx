@@ -1,6 +1,8 @@
 import axios, { AxiosResponse } from "axios";
 import { Response } from './Api.module'
 import ModelBase from "../components/common/model/ModelBase";
+import { http } from "./http/AxiosConfig";
+
 export class StudentService {
     private _serverUrl: string;
 
@@ -10,12 +12,7 @@ export class StudentService {
 
     async getStudents(filter: string = '', orderBy: string = '', page: number = 0, pageSize: number = 10): Promise<AxiosResponse<Response<ModelBase[]>>> {
         try {
-            return axios.get(`${this._serverUrl}Student/GetStudents?filter=${filter}&orderBy=${orderBy}&page=${page}&pageSize=${pageSize}`, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('jwt') }`
-                }
-            })
+            return http.get(`${this._serverUrl}Student/GetStudents?filter=${filter}&orderBy=${orderBy}&page=${page}&pageSize=${pageSize}`);
         }
         catch (error) {
             console.error('Error during get students list: ', error);
@@ -25,13 +22,9 @@ export class StudentService {
 
     async removeStudent(id: string): Promise<AxiosResponse<Response<ModelBase>>> {
         try {
-            return axios.delete(`${this._serverUrl}Student/DeleteStudent`,  {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('jwt')}`
-                },
+            return http.delete(`${this._serverUrl}Student/DeleteStudent`, {
                 data: id
-            })
+            });
         }
         catch (error) {
             console.log('Error during remove student: ', error);

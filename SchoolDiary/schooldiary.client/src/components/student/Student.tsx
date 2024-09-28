@@ -35,16 +35,16 @@ export default function Student() {
     const studentService: StudentService = new StudentService(serverUrl);
     const [data, setData] = useState<Student[]>([]);
     const [orderSettings, setOrderSettings] = useState<Array<{ "PropertyName": string, "Direction": string }>>([]);
-    
+    const [paginationSettings, setPaginationSettings] = useState<{ page: number, pageSize: number }>({ page: 0, pageSize: 5 });
+
     useEffect(() => {
-        debugger;
         let orderSettingsString = orderSettings.length > 0 ? `{"data":${JSON.stringify(orderSettings)}}` : '';
-        studentService.getStudents('', orderSettingsString).then((response) => {
-            if (response.data.isSuccess) {
+        studentService.getStudents('', orderSettingsString, paginationSettings.page, paginationSettings.pageSize).then((response) => {
+            if (response?.data?.isSuccess) {
                 setData(response.data.result as Student[]);
             }
         });
-    }, [orderSettings]);
+    }, [orderSettings, paginationSettings]);
 
     const edit = (student: ModelBase) => {
         let res = student as Student;
@@ -68,6 +68,7 @@ export default function Student() {
             onEdit={edit}
             onRemove={remove}
         />
-        <Pagination />
+        <Pagination page={paginationSettings.page} maxDisplaydPages={3} totalPages={10}
+            onPageChange={setPaginationSettings} pageCountArray={[5, 10, 15, 20, 25, 30]} />
     </>
 }

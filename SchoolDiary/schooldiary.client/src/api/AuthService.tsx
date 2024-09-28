@@ -1,5 +1,7 @@
-import axios, { AxiosResponse } from "axios";
-import { Response } from './Api.module'
+import { AxiosResponse } from "axios";
+import { Response } from './Api.module';
+import { http } from "./http/AxiosConfig";
+ 
 export class AuthService {
     private _serverUrl: string;
 
@@ -9,11 +11,7 @@ export class AuthService {
 
     async login(email: string, password: string): Promise<AxiosResponse<Response<string>>> {
         try {
-            return axios.post(`${this._serverUrl}Auth/Login`, JSON.stringify({ email, password }), {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
+            return http.post(`${this._serverUrl}Auth/Login`, JSON.stringify({ email, password }));
         }
         catch (error) {
             console.error('Error during login: ', error);
@@ -23,11 +21,7 @@ export class AuthService {
 
     async register(email: string, password: string, confirmPassword: string): Promise<AxiosResponse<Response<string>>> {
         try {
-            return axios.post(`${this._serverUrl}Auth/Register`, JSON.stringify({ email, password, confirmPassword }), {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
+            return http.post(`${this._serverUrl}Auth/Register`, JSON.stringify({ email, password, confirmPassword }));
         }
         catch (error) {
             console.log('Error during registration: ', error);
@@ -37,11 +31,7 @@ export class AuthService {
 
     async forgotPassword(email: string): Promise<AxiosResponse<Response<string>>> {
         try {
-            return axios.post(`${this._serverUrl}Auth/ForgotPassword`, JSON.stringify({ email }), {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
+            return http.post(`${this._serverUrl}Auth/ForgotPassword`, JSON.stringify({ email }));
         }
         catch (error) {
             console.log('Error during reset password', error);
@@ -51,11 +41,7 @@ export class AuthService {
 
     async resetPassword(token: string | null, email: string | null, password: string, confirmPassword: string): Promise<AxiosResponse<Response<any>>> {
         try {
-            return axios.post(`${this._serverUrl}Auth/ResetPassword`, JSON.stringify({ token, email, password, confirmPassword }), {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
+            return http.post(`${this._serverUrl}Auth/ResetPassword`, JSON.stringify({ token, email, password, confirmPassword }));
         }
         catch (error) {
             console.log('Error during reset password.');

@@ -16,7 +16,6 @@ namespace SchoolDiary.DAL.Repositories
         {
             
         }
-
         public async Task<IEnumerable<Student>> GetStudents(string filter, string orderBy, int? page, int? pageSize)
         {
             return await this.Get().AsNoTracking().Filter(filter).OrderBy(orderBy).Paginate(page, pageSize).ToListAsync();

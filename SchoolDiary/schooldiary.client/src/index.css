@@ -19,21 +19,25 @@ button.btn-primary {
 div.bg-primary {
     background-color: #3b71ca !important;
 }
+
 nav.bg-dark {
     background-color: #1B1E24 !important;
 }
 /*Common*/
-.thead-btn{
+.thead-btn {
     border: none;
     background-color: transparent;
 }
+
 .icon-btn {
     border: none;
     background: transparent;
 }
+
     .icon-btn:active {
         color: #282C34 !important;
     }
+
 .sidebar {
     height: 100%;
     width: 200px;
@@ -44,13 +48,16 @@ nav.bg-dark {
     background-color: #1B1E24;
     transition: .5s;
 }
+
 .sidebar-hidden {
     width: 50px;
     transition: .5s;
 }
+
 .hidden {
     display: none !important;
 }
+
 .sidebar-hide-btn {
     width: 15px;
     height: 15px;
@@ -60,6 +67,7 @@ nav.bg-dark {
     background-color: #61D4E7;
     border-radius: 10px;
 }
+
 .arrow {
     border: solid black;
     border-width: 0 3px 3px 0;
@@ -80,27 +88,32 @@ nav.bg-dark {
     margin-bottom: 6px;
     margin-left: 5px;
 }
+
 .sidebar-header {
     padding: 10px;
     color: #61D4E7;
     width: 200px;
 }
-.sidebar-header-user-info{
+
+.sidebar-header-user-info {
     color: #fff;
     font-size: 14px;
     text-transform: uppercase;
     display: inline-block;
     padding-left: 10px;
 }
+
 .sidebar-divider {
     color: #61D4E7;
 }
+
 .sidebar-footer {
     width: 100%;
     position: absolute;
     bottom: 0px;
     margin-bottom: 20px;
 }
+
 .nav-item {
     color: #61D4E7;
     width: 100%;
@@ -124,35 +137,78 @@ nav.bg-dark {
         display: inline;
         vertical-align: bottom;
     }
+
 .active {
     color: #1B1E24;
     background-color: #61D4E7;
 }
+
 .menu-item {
     width: 200px;
 }
+
 .nav-li
 .divider {
     border-top: 1px solid #bbb;
 }
+
 .collapsed {
     margin-left: 200px;
     transition: .5s;
 }
+
 .stretched {
     margin-left: 50px;
     transition: .5s;
 }
+
 .search-form {
     display: flex;
     align-items: center;
     float: right;
 }
+
 .search-input {
     margin-right: 10px;
 }
+
 .search-btn {
     margin-right: 10px;
+}
+/*Pagination*/
+button.page-link {
+    border: none;
+    background-color: transparent;
+    color: #1B1E24;
+}
+
+.page-link {
+    background-color: transparent !important;
+}
+
+    .page-link:focus {
+        box-shadow: none !important;
+    }
+
+li.active {
+    background-color: transparent;
+    font-weight: 200;
+}
+
+.active > button.page-link {
+    background-color: transparent;
+    color: #61D4E7;
+    font-size: 18px;
+}
+
+.page-size {
+    border: none;
+    margin-top: 6px;
+}
+
+.page-size:focus-visible {
+    outline: none;
+    border: none !important;
 }
 /*Login page*/
 .login-container {
